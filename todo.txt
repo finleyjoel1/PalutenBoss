@@ -1,0 +1,9 @@
+gemacht: 🟢
+noch nicht gemacht: 🔴
+
+Main Menu
+- Türkisch Sprache hinzufügen 🟢
+- Im Menü Leben vom Boss setzen - 0. Slot 🟢
+- Superkräfte so krasse
+- Mit PalutenBoss Sword mehr Damage gegen Palutenboss machen
+- Neue Version verfügbar -> Gui

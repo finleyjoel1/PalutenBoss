@@ -13,11 +13,11 @@ public class PermissionManager {
         addPermission("colorPermission", PalutenBoss.getInstance().getPermissionName() + "color");
     }
 
-    public void addPermission(String permissionName, String permission) {
+    private void addPermission(String permissionName, String permission) {
         setPermissionPath(permissionName, permission);
     }
 
-    public void setPermissionPath(String path, String value) {
+    private void setPermissionPath(String path, String value) {
         PalutenBoss.getInstance().getLoader().getPermission().setPathIfEmpty(path, value);
     }
 }

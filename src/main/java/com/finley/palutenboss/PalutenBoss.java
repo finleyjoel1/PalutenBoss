@@ -2,6 +2,7 @@ package com.finley.palutenboss;
 
 import com.finley.palutenboss.util.Loader;
 import com.finley.palutenboss.util.manager.FileManager;
+import com.finley.palutenboss.util.manager.entity.EntityManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PalutenBoss extends JavaPlugin {
@@ -12,6 +13,7 @@ public final class PalutenBoss extends JavaPlugin {
 
     private static PalutenBoss instance;
     private static FileManager fileManager;
+    private static EntityManager entityManager;
     public Loader loader;
 
     public static PalutenBoss getInstance() {
@@ -38,6 +40,10 @@ public final class PalutenBoss extends JavaPlugin {
         return fileManager;
     }
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
     @Override
     public void onLoad() {
         instance = this;
@@ -45,6 +51,7 @@ public final class PalutenBoss extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        entityManager = new EntityManager();
         loader = new Loader();
         fileManager = new FileManager();
         loader.registerAll();

@@ -1,7 +1,6 @@
 package com.finley.palutenboss.listener.entity;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.manager.entity.EntityManager;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -33,7 +32,7 @@ public class EntityDamageListener implements Listener {
 
             if (damager instanceof Player) {
                 Player player = (Player) damager;
-                if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(PalutenBoss.getInstance().getBossName() + " §c§lSword")) {
+                if (player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(PalutenBoss.getInstance().getBossName() + " §c§lSword")) {
                     event.setDamage(1.5D);
                     return;
                 }
@@ -71,9 +70,9 @@ public class EntityDamageListener implements Listener {
         EntityDamageEvent.DamageCause attackCause = EntityDamageEvent.DamageCause.ENTITY_ATTACK;
 
         if (customName.equalsIgnoreCase(palutenBossName) && damageCause == attackCause) {
-            Player player = EntityManager.findNearbyPlayer(palutenBoss);
+            Player player = PalutenBoss.getInstance().getEntityManager().findNearbyPlayer(palutenBoss);
 
-            if(player == null) {
+            if (player == null) {
                 return;
             }
 

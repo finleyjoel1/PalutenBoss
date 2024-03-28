@@ -1,12 +1,12 @@
 package com.finley.palutenboss.listener.player;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.manager.player.MenuManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,26 +39,26 @@ public class PlayerInvListener implements Listener {
 
                 switch (titleName) {
                     case "Settings":
-                        MenuManager.registerMainMenu(player, itemName);
+                        PalutenBoss.getInstance().getLoader().getMenuManager().registerMainMenu(player, itemName);
                         break;
                     case "Language":
-                        MenuManager.registerLanguages(player, itemName);
+                        PalutenBoss.getInstance().getLoader().getMenuManager().registerLanguages(player, itemName);
                         break;
                     case "Team Color":
-                        MenuManager.registerWools(player, itemName);
+                        PalutenBoss.getInstance().getLoader().getMenuManager().registerWools(player, itemName);
                         break;
                     case "Effect":
-                        MenuManager.registerEffect(player, itemName);
+                        PalutenBoss.getInstance().getLoader().getMenuManager().registerEffect(player, itemName);
                         break;
                     case "Choose World":
-                        MenuManager.registerChoose(player, itemName);
+                        PalutenBoss.getInstance().getLoader().getMenuManager().registerChoose(player, itemName);
                         break;
                     case "Health":
-                        MenuManager.registerHealth(player, itemName);
+                        PalutenBoss.getInstance().getLoader().getMenuManager().registerHealth(player, itemName);
                         break;
                 }
 
-                MenuManager.registerBack(player, itemName, titleName);
+                PalutenBoss.getInstance().getLoader().getMenuManager().registerBack(player, itemName, titleName);
                 event.setCancelled(true);
                 break;
             }

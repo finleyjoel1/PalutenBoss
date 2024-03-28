@@ -10,12 +10,12 @@ import org.bukkit.inventory.ShapedRecipe;
 
 public class RecipeManager {
 
-    public static void registerRecipe() {
+    public void registerRecipe() {
 
         NamespacedKey key = new NamespacedKey(PalutenBoss.getInstance(), "pumpkin_sword");
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            ItemStack pumpkinSword = new ItemStack(ItemManager.getItemStack(player, player));
+            ItemStack pumpkinSword = new ItemStack(PalutenBoss.getInstance().getLoader().getItemManager().getItemStack(player, player));
             ShapedRecipe recipe = new ShapedRecipe(key, pumpkinSword);
 
             recipe.shape(" # ", " # ", " * ");

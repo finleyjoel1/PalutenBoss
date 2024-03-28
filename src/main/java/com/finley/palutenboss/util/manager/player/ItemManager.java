@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ItemManager {
 
-    public static ItemStack createPalutenBossSword(Player player, Entity entity) {
+    public ItemStack createPalutenBossSword(Player player, Entity entity) {
         List<String> lore = Arrays.asList("", String.format("§7The Boss got killed by §e%s§7.", player.getName()), String.format("§7Signed from §a%s §7on §c%s.", entity.getName(), getCurrentTimeStamp()));
 
         return new ItemBuilder(Material.NETHERITE_SWORD)
@@ -27,12 +27,12 @@ public class ItemManager {
     }
 
 
-    public static ItemStack getItemStack(Player player, Entity entity) {
+    public ItemStack getItemStack(Player player, Entity entity) {
         return createPalutenBossSword(player, entity).clone();
     }
 
 
-    public static String getCurrentTimeStamp() {
+    public String getCurrentTimeStamp() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy");
         Date now = new Date();
         return sdfDate.format(now);

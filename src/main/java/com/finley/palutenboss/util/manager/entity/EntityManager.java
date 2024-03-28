@@ -22,11 +22,11 @@ import java.util.Random;
 
 
 public class EntityManager {
-    private static final Color ORANGE = Color.ORANGE;
-    private static final Color BLACK = Color.BLACK;
-    private static final Color GRAY = Color.GRAY;
+    private final Color ORANGE = Color.ORANGE;
+    private final Color BLACK = Color.BLACK;
+    private final Color GRAY = Color.GRAY;
 
-    public static void spawnEntity(Player target, Location location, String name) {
+    public void spawnEntity(Player target, Location location, String name) {
         World world = Bukkit.getWorld(location.getWorld().getName());
 
         if (name == null || world == null) {
@@ -107,21 +107,21 @@ public class EntityManager {
         }
     }
 
-    public static int randomChance() {
+    public int randomChance() {
         Random random = new Random();
         return random.nextInt(0, 100);
     }
 
-    public static void sendAlert(Player target) {
+    public void sendAlert(Player target) {
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (target != null) {
                 all.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 10, 255, true));
-                MessageManager.sendTitleToPlayer(all, "bossSpawned");
+                PalutenBoss.getInstance().getLoader().getMessageManager().sendTitleToPlayer(all, "bossSpawned");
             }
         }
     }
 
-    public static Player findNearbyPlayer(Zombie zombie) {
+    public Player findNearbyPlayer(Zombie zombie) {
         Entity target = zombie.getTarget();
 
         if (target != null) {
@@ -137,7 +137,7 @@ public class EntityManager {
         return null;
     }
 
-    public static void runTimer(Entity entity) {
+    public void runTimer(Entity entity) {
         int minutes = 20 * 60 * 10;
         new BukkitRunnable() {
             @Override
@@ -152,7 +152,7 @@ public class EntityManager {
 
     }
 
-    public static void cleanPalutenBosses(String worldName) {
+    public void cleanPalutenBosses(String worldName) {
         World world = Bukkit.getWorld(worldName);
         if (world != null) {
             for (Entity entity : world.getEntities()) {
@@ -163,7 +163,7 @@ public class EntityManager {
         }
     }
 
-    public static void spawnAura(Entity entity) {
+    public void spawnAura(Entity entity) {
         new BukkitRunnable() {
 
             @Override

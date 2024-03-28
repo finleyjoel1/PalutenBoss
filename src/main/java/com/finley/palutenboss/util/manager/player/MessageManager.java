@@ -12,15 +12,19 @@ import java.util.List;
 import java.util.Map;
 
 public class MessageManager {
-    public static final Map<String, Map<String, String>> languageMessages = new HashMap<>();
-    private static final List<String> validLanguages = Arrays.asList("de", "en", "ru", "es", "lt", "zh", "ja", "tr");
-    private static FileBuilder messages = PalutenBoss.getInstance().getLoader().getMessages();
+    public final Map<String, Map<String, String>> languageMessages = new HashMap<>();
+    private final List<String> validLanguages = Arrays.asList("de", "en", "ru", "es", "lt", "zh", "ja", "tr");
+    private FileBuilder messages = PalutenBoss.getInstance().getLoader().getMessages();
 
-    static {
+    public MessageManager() {
         loadMessages();
     }
 
-    private static void loadMessages() {
+    private static void setPath(FileBuilder messages, String path, String value) {
+        messages.setPathIfEmpty(path, value);
+    }
+
+    private void loadMessages() {
         for (String language : validLanguages) {
             Map<String, String> messagesMap = new HashMap<>();
             for (String key : Arrays.asList("spawnSuccess", "noPermission", "noPlayer", "alert", "notFound",
@@ -32,27 +36,27 @@ public class MessageManager {
         }
     }
 
-    public static void sendMessageToPlayer(Player player, String messageKey) {
+    public void sendMessageToPlayer(Player player, String messageKey) {
         sendMessage(player, getMessage(messageKey, Loader.language));
     }
 
-    public static void sendMessage(Player player, String message) {
+    public void sendMessage(Player player, String message) {
         player.sendMessage(PalutenBoss.getInstance().getPrefix() + message);
     }
 
-    public static void sendTitleToPlayer(Player player, String messageKey) {
+    public void sendTitleToPlayer(Player player, String messageKey) {
         player.sendTitle(getMessage(messageKey, Loader.language), "");
     }
 
-    public static void sendNoPermissionMessage(Player player) {
+    public void sendNoPermissionMessage(Player player) {
         sendMessageToPlayer(player, "noPermission");
     }
 
-    public static void sendNoPlayerMessage() {
+    public void sendNoPlayerMessage() {
         Bukkit.getConsoleSender().sendMessage(PalutenBoss.getInstance().getPrefix() + getMessage("noPlayer", Loader.language));
     }
 
-    private static String getMessage(String messageKey, String language) {
+    private String getMessage(String messageKey, String language) {
         Map<String, String> messages = languageMessages.get(language);
 
         if (messages != null) {
@@ -63,15 +67,15 @@ public class MessageManager {
         }
     }
 
-    public static boolean isValidLanguage(String language) {
+    public boolean isValidLanguage(String language) {
         return validLanguages.contains(language);
     }
 
-    public static FileBuilder getMessages() {
+    public FileBuilder getMessages() {
         return messages;
     }
 
-    public static void saveMessages() {
+    public void saveMessages() {
         FileBuilder messages = getMessages();
 
         for (String language : validLanguages) {
@@ -213,10 +217,6 @@ public class MessageManager {
 
             PalutenBoss.getInstance().getLoader().getFileBuilder().reload();
         }
-    }
-
-    private static void setPath(FileBuilder messages, String path, String value) {
-        messages.setPathIfEmpty(path, value);
     }
 
 }

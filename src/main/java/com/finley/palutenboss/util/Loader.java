@@ -8,9 +8,7 @@ import com.finley.palutenboss.listener.entity.EntityTransformListener;
 import com.finley.palutenboss.listener.player.PlayerInvListener;
 import com.finley.palutenboss.listener.player.PlayerMotdListener;
 import com.finley.palutenboss.util.builders.FileBuilder;
-import com.finley.palutenboss.util.manager.player.MessageManager;
-import com.finley.palutenboss.util.manager.player.PermissionManager;
-import com.finley.palutenboss.util.manager.player.RecipeManager;
+import com.finley.palutenboss.util.manager.player.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
@@ -23,11 +21,21 @@ public class Loader {
     private static FileBuilder messages;
     private final PalutenBoss palutenBoss;
     private final PermissionManager permissionManager;
+    private final GuiManager guiManager;
+    private final ItemManager itemManager;
+    private final MenuManager menuManager;
+    private final MessageManager messageManager;
+    private final RecipeManager recipeManager;
 
     public Loader() {
         PalutenBoss.getInstance().loader = this;
         palutenBoss = PalutenBoss.getInstance();
         permission = FileBuilder.getFileBuilder(PalutenBoss.getInstance().getDataFolder().getPath(), "permissions.yml");
+        messageManager = new MessageManager();
+        recipeManager = new RecipeManager();
+        itemManager = new ItemManager();
+        guiManager = new GuiManager();
+        menuManager = new MenuManager();
         permissionManager = new PermissionManager();
         messages = FileBuilder.getFileBuilder(PalutenBoss.getInstance().getDataFolder().getPath(), "messages.yml");
         fb = FileBuilder.getFileBuilder(PalutenBoss.getInstance().getDataFolder().getPath(), "config.yml");
@@ -60,11 +68,31 @@ public class Loader {
         return permission;
     }
 
+    public GuiManager getGuiManager() {
+        return guiManager;
+    }
+
+    public ItemManager getItemManager() {
+        return itemManager;
+    }
+
+    public MenuManager getMenuManager() {
+        return menuManager;
+    }
+
+    public MessageManager getMessageManager() {
+        return messageManager;
+    }
+
+    public RecipeManager getRecipeManager() {
+        return recipeManager;
+    }
+
     public void registerAll() {
         changeFile();
         registerEvents();
         registerCommands();
-        RecipeManager.registerRecipe();
+        getRecipeManager().registerRecipe();
     }
 
     private void changeFile() {
@@ -74,7 +102,7 @@ public class Loader {
         PalutenBoss.getInstance().getFileManager().setConfigFilePathIfEmpty("teamColor", "GOLD");
         PalutenBoss.getInstance().getFileManager().setConfigFilePathIfEmpty("health", 750);
 
-        MessageManager.saveMessages();
+        PalutenBoss.getInstance().getLoader().getMessageManager().saveMessages();
         PalutenBoss.getInstance().getLoader().getFileBuilder().reload();
     }
 

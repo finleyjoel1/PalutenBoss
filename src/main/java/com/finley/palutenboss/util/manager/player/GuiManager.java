@@ -10,7 +10,6 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,12 +20,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
 public class GuiManager {
 
     private static final String prefix = PalutenBoss.getInstance().getPrefix() + "§a§l";
     private static final String permission = PalutenBoss.getInstance().getLoader().getPermission().getString("settingsPermission");
 
-    public static void createInventory(Player player, String name) {
+    public void createInventory(Player player, String name) {
         if (player.hasPermission(permission)) {
             Inventory inventory = Bukkit.createInventory(null, 45, prefix + name);
 
@@ -56,7 +56,7 @@ public class GuiManager {
         }
     }
 
-    public static void createWorldChooseInventory(Player player, String name) {
+    public void createWorldChooseInventory(Player player, String name) {
         if (player.hasPermission(permission)) {
             Inventory inventory = Bukkit.createInventory(null, 45, prefix + name);
 
@@ -81,7 +81,7 @@ public class GuiManager {
         }
     }
 
-    public static void createTeamInventory(Player player, String name) {
+    public void createTeamInventory(Player player, String name) {
         if (player.hasPermission(permission)) {
             Inventory inventory = Bukkit.createInventory(null, 27, prefix + name);
             List<ItemStack> woolStacks = getItemStacks();
@@ -112,7 +112,7 @@ public class GuiManager {
     }
 
 
-    public static void createLanguageInventory(Player player, String titleName) {
+    public void createLanguageInventory(Player player, String titleName) {
         if (player.hasPermission(permission)) {
             Inventory inventory = Bukkit.createInventory(null, 45, prefix + titleName);
 
@@ -139,7 +139,7 @@ public class GuiManager {
         }
     }
 
-    public static ItemStack getTeamColor() {
+    public ItemStack getTeamColor() {
         String teamColor = PalutenBoss.getInstance().getLoader().getFileBuilder().getString("teamColor");
 
         ItemStack itemStack = null;
@@ -177,7 +177,7 @@ public class GuiManager {
         return itemStack;
     }
 
-    public static ItemStack getEffectItem() {
+    public ItemStack getEffectItem() {
         String effect = PalutenBoss.getInstance().getLoader().getFileBuilder().getString("auraEffect");
         ItemStack itemStack = null;
 
@@ -202,7 +202,7 @@ public class GuiManager {
         return itemStack;
     }
 
-    public static ItemStack getLanguageItem() {
+    public ItemStack getLanguageItem() {
         String language = PalutenBoss.getInstance().getLoader().getFileBuilder().getString("language");
         String url = getLanguageUrl(language);
 
@@ -214,7 +214,7 @@ public class GuiManager {
         return itemStack;
     }
 
-    private static String getLanguageUrl(String language) {
+    private String getLanguageUrl(String language) {
         String url = null;
         switch (language) {
             case "de":
@@ -243,11 +243,12 @@ public class GuiManager {
                 return url;
             default:
                 url = "";
-        };
+        }
+        ;
         return url;
     }
 
-    public static ItemStack createLanguageItem(String language, ChatColor color, String url) {
+    public ItemStack createLanguageItem(String language, ChatColor color, String url) {
         ItemStack head = new ItemBuilder(Material.PLAYER_HEAD).build();
         if (url.isEmpty()) return head;
 
@@ -273,14 +274,14 @@ public class GuiManager {
     }
 
 
-    public static DyeColor getWoolColor(ItemStack itemStack) {
+    public DyeColor getWoolColor(ItemStack itemStack) {
         if (itemStack != null && itemStack.getType() == Material.WHITE_WOOL && itemStack.getData() != null) {
             return DyeColor.getByWoolData(itemStack.getData().getData());
         }
         return null;
     }
 
-    public static List<ItemStack> getItemStacks() {
+    public List<ItemStack> getItemStacks() {
         return Collections.unmodifiableList(Arrays.asList(
                 createColoredWool(DyeColor.GRAY),
                 createColoredWool(DyeColor.BLACK),
@@ -292,14 +293,14 @@ public class GuiManager {
         ));
     }
 
-    private static ItemStack createColoredWool(DyeColor color) {
+    private ItemStack createColoredWool(DyeColor color) {
         ChatColor chatColor = getChatColor(color);
         return new ItemBuilder(Material.valueOf(color.name() + "_WOOL"))
                 .setDisplayName(chatColor + color.name() + " Wool")
                 .build();
     }
 
-    public static void createEffectInventory(Player player, String name) {
+    public void createEffectInventory(Player player, String name) {
         if (player.hasPermission(permission)) {
             Inventory inventory = Bukkit.createInventory(null, 45, prefix + name);
 
@@ -336,7 +337,7 @@ public class GuiManager {
         }
     }
 
-    public static ChatColor getChatColor(DyeColor color) {
+    public ChatColor getChatColor(DyeColor color) {
         switch (color) {
             case GRAY:
                 return ChatColor.GRAY;
@@ -358,7 +359,7 @@ public class GuiManager {
     }
 
 
-    public static void createHealthInventory(Player player, String name) {
+    public void createHealthInventory(Player player, String name) {
         if (player.hasPermission(permission)) {
             Inventory inventory = Bukkit.createInventory(player, InventoryType.ANVIL, prefix + name);
 

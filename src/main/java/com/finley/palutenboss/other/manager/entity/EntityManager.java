@@ -1,8 +1,8 @@
-package com.finley.palutenboss.util.manager.entity;
+package com.finley.palutenboss.other.manager.entity;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.builders.ItemBuilder;
-import com.finley.palutenboss.util.manager.player.MessageManager;
+import com.finley.palutenboss.other.manager.player.ItemManager;
+import com.finley.palutenboss.other.util.builder.ItemBuilder;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
@@ -26,7 +26,7 @@ public class EntityManager {
     private final Color BLACK = Color.BLACK;
     private final Color GRAY = Color.GRAY;
 
-    public void spawnEntity(Player target, Location location, String name) {
+    public void spawnEntity(Player target, Location location, String name, double health) {
         World world = Bukkit.getWorld(location.getWorld().getName());
 
         if (name == null || world == null) {
@@ -57,6 +57,7 @@ public class EntityManager {
         ItemStack chestplate = new ItemBuilder(Material.LEATHER_CHESTPLATE).build();
         ItemStack leggings = new ItemBuilder(Material.LEATHER_LEGGINGS).build();
         ItemStack boots = new ItemBuilder(Material.LEATHER_BOOTS).build();
+        ItemStack palutenSword = new ItemManager().createPalutenBossSword(target, entity);
         LeatherArmorMeta chestplateMeta = (LeatherArmorMeta) chestplate.getItemMeta();
         LeatherArmorMeta leggingsMeta = (LeatherArmorMeta) leggings.getItemMeta();
         LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
@@ -82,19 +83,19 @@ public class EntityManager {
             entityEquipment.setChestplate(chestplate);
             entityEquipment.setLeggings(leggings);
             entityEquipment.setBoots(boots);
+            entityEquipment.setItemInMainHand(palutenSword);
         }
 
         spawnAura(entity);
         runTimer(entity);
         Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(PalutenBoss.getInstance().getLoader().getFileBuilder().getInteger("health"));
-        entity.setHealth(PalutenBoss.getInstance().getLoader().getFileBuilder().getInteger("health"));
-        entity.setMaxHealth(PalutenBoss.getInstance().getLoader().getFileBuilder().getInteger("health"));
+        entity.setHealth(health);
+        entity.setMaxHealth(health);
         team.setColor(ChatColor.valueOf(PalutenBoss.getInstance().getLoader().getFileBuilder().getString("teamColor")));
         team.addEntry(entity.getUniqueId().toString());
         sendAlert(target);
 
-        if (entity instanceof Ageable) {
-            Ageable ageableEntity = (Ageable) entity;
+        if (entity instanceof Ageable ageableEntity) {
             if (!ageableEntity.isAdult()) {
                 ageableEntity.setAdult();
             }
@@ -103,16 +104,18 @@ public class EntityManager {
         }
 
         if (randomChance() == 0) {
-            entityEquipment.setItemInHand(netheriteSword);
+            if (entityEquipment != null) {
+                entityEquipment.setItemInHand(netheriteSword);
+            }
         }
     }
 
-    public int randomChance() {
+    private int randomChance() {
         Random random = new Random();
         return random.nextInt(0, 100);
     }
 
-    public void sendAlert(Player target) {
+    private void sendAlert(Player target) {
         for (Player all : Bukkit.getOnlinePlayers()) {
             if (target != null) {
                 all.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 10, 255, true));
@@ -137,7 +140,7 @@ public class EntityManager {
         return null;
     }
 
-    public void runTimer(Entity entity) {
+    private void runTimer(Entity entity) {
         int minutes = 20 * 60 * 10;
         new BukkitRunnable() {
             @Override

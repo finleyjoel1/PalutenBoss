@@ -1,7 +1,7 @@
-package com.finley.palutenboss.util.manager.player;
+package com.finley.palutenboss.other.manager.player;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.builders.ItemBuilder;
+import com.finley.palutenboss.other.util.builder.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;

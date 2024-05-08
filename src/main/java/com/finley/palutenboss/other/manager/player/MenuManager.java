@@ -1,4 +1,4 @@
-package com.finley.palutenboss.util.manager.player;
+package com.finley.palutenboss.other.manager.player;
 
 import com.finley.palutenboss.PalutenBoss;
 import org.bukkit.ChatColor;
@@ -28,7 +28,7 @@ public class MenuManager {
             PalutenBoss.getInstance().getLoader().getGuiManager().createWorldChooseInventory(player, "Choose World");
         } else if (itemName.equalsIgnoreCase("§a§lSpawn " + PalutenBoss.getInstance().getBossName())) {
             closeInventory(player);
-            PalutenBoss.getInstance().getEntityManager().spawnEntity(player, player.getLocation(), PalutenBoss.getInstance().getBossName());
+            PalutenBoss.getInstance().getEntityManager().spawnEntity(player, player.getLocation(), PalutenBoss.getInstance().getBossName(), PalutenBoss.getInstance().getLoader().getFileBuilder().getInteger("health"));
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "spawnSuccess");
         } else if (itemName.equalsIgnoreCase("§6§lEffect")) {
             closeInventory(player);
@@ -58,7 +58,7 @@ public class MenuManager {
     }
 
     private void setPath(String path, String value) {
-        PalutenBoss.getInstance().getFileManager().setConfigFilePath(path, value);
+        PalutenBoss.getInstance().getFileUtil().setConfigFilePath(path, value);
     }
 
     public void registerWools(Player player, String itemName) {
@@ -98,35 +98,35 @@ public class MenuManager {
     public void registerLanguages(Player player, String itemName) {
         if (itemName.equalsIgnoreCase(ChatColor.DARK_GREEN + "German")) {
             setPath("language", "de");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         } else if (itemName.equalsIgnoreCase(ChatColor.BLUE + "English")) {
             setPath("language", "en");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         } else if (itemName.equalsIgnoreCase(ChatColor.DARK_BLUE + "Russian")) {
             setPath("language", "ru");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         } else if (itemName.equalsIgnoreCase(ChatColor.YELLOW + "Spanish")) {
             setPath("language", "es");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         } else if (itemName.equalsIgnoreCase(ChatColor.RED + "Lithuanian")) {
             setPath("language", "lt");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         } else if (itemName.equalsIgnoreCase(ChatColor.LIGHT_PURPLE + "Chinese")) {
             setPath("language", "zh");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         } else if (itemName.equalsIgnoreCase(ChatColor.AQUA + "Japanese")) {
             setPath("language", "ja");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         } else if (itemName.equalsIgnoreCase(ChatColor.AQUA + "Turkish")) {
             setPath("language", "tr");
-            PalutenBoss.getInstance().getFileManager().setLanguage();
+            PalutenBoss.getInstance().getFileUtil().setLanguage();
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
         }
 
@@ -175,7 +175,7 @@ public class MenuManager {
     }
 
     public void registerHealth(Player player, String itemName) {
-        player.sendMessage(itemName);
+        player.sendMessage("name: " + itemName);
     }
 
 }

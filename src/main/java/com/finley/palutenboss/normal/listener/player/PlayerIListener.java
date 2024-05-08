@@ -1,20 +1,26 @@
-package com.finley.palutenboss.listener.player;
+package com.finley.palutenboss.normal.listener.player;
 
 import com.finley.palutenboss.PalutenBoss;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
-public class PlayerInvListener implements Listener {
+public class PlayerIListener implements Listener {
 
-    private final List<String> titleNames = Arrays.asList("Settings", "Team Color", "Language", "Effect", "Choose World");
+    private final List<String> titleNames = Arrays.asList("Settings", "Team Color", "Language", "Effect", "Choose World", "Health");
 
+    public PlayerIListener() {
+        Bukkit.getPluginManager().registerEvents(this, PalutenBoss.getInstance());
+    }
 
     @EventHandler
     public void handle(InventoryClickEvent event) {
@@ -54,14 +60,26 @@ public class PlayerInvListener implements Listener {
                         PalutenBoss.getInstance().getLoader().getMenuManager().registerChoose(player, itemName);
                         break;
                     case "Health":
+                        player.setLevel(25);
                         PalutenBoss.getInstance().getLoader().getMenuManager().registerHealth(player, itemName);
                         break;
                 }
 
                 PalutenBoss.getInstance().getLoader().getMenuManager().registerBack(player, itemName, titleName);
-                event.setCancelled(true);
                 break;
             }
         }
+    }
+
+    @EventHandler
+    public void handleAnvil(PrepareAnvilEvent event) {
+        event.setResult(event.getResult());
+
+        if (Objects.requireNonNull(event.getResult()).getItemMeta() == null) {
+            event.getView().getPlayer().sendMessage("null");
+            return;
+        }
+
+        event.getView().getPlayer().sendMessage(event.getResult().getItemMeta().getDisplayName());
     }
 }

@@ -1,4 +1,4 @@
-package com.finley.palutenboss.util.manager;
+package com.finley.palutenboss.other.util.other;
 
 import org.bukkit.ChatColor;
 

@@ -1,8 +1,9 @@
-package com.finley.palutenboss.util.manager.player;
+package com.finley.palutenboss.other.manager.player;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.Loader;
-import com.finley.palutenboss.util.builders.FileBuilder;
+import com.finley.palutenboss.other.util.Loader;
+import com.finley.palutenboss.other.util.builder.FileBuilder;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -14,7 +15,8 @@ import java.util.Map;
 public class MessageManager {
     public final Map<String, Map<String, String>> languageMessages = new HashMap<>();
     private final List<String> validLanguages = Arrays.asList("de", "en", "ru", "es", "lt", "zh", "ja", "tr");
-    private FileBuilder messages = PalutenBoss.getInstance().getLoader().getMessages();
+    @Getter
+    private final FileBuilder messages = PalutenBoss.getInstance().getLoader().getMessages();
 
     public MessageManager() {
         loadMessages();
@@ -69,10 +71,6 @@ public class MessageManager {
 
     public boolean isValidLanguage(String language) {
         return validLanguages.contains(language);
-    }
-
-    public FileBuilder getMessages() {
-        return messages;
     }
 
     public void saveMessages() {

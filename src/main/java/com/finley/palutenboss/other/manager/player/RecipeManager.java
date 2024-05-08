@@ -1,4 +1,4 @@
-package com.finley.palutenboss.util.manager.player;
+package com.finley.palutenboss.other.manager.player;
 
 import com.finley.palutenboss.PalutenBoss;
 import org.bukkit.Bukkit;

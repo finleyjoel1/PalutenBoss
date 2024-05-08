@@ -1,7 +1,7 @@
-package com.finley.palutenboss.util.manager.player;
+package com.finley.palutenboss.other.manager.player;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.builders.ItemBuilder;
+import com.finley.palutenboss.other.util.builder.ItemBuilder;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
@@ -142,31 +142,19 @@ public class GuiManager {
     public ItemStack getTeamColor() {
         String teamColor = PalutenBoss.getInstance().getLoader().getFileBuilder().getString("teamColor");
 
-        ItemStack itemStack = null;
-
-        switch (teamColor) {
-            case "GRAY":
-                itemStack = new ItemBuilder(Material.GRAY_WOOL).setDisplayName(ChatColor.GRAY + "GRAY Wool").build();
-                break;
-            case "BLACK":
-                itemStack = new ItemBuilder(Material.BLACK_WOOL).setDisplayName(ChatColor.BLACK + "BLACK Wool").build();
-                break;
-            case "RED":
-                itemStack = new ItemBuilder(Material.RED_WOOL).setDisplayName(ChatColor.RED + "RED Wool").build();
-                break;
-            case "GOLD":
-                itemStack = new ItemBuilder(Material.YELLOW_WOOL).setDisplayName(ChatColor.YELLOW + "YELLOW Wool").build();
-                break;
-            case "GREEN":
-                itemStack = new ItemBuilder(Material.GREEN_WOOL).setDisplayName(ChatColor.GREEN + "GREEN Wool").build();
-                break;
-            case "DARK_BLUE":
-                itemStack = new ItemBuilder(Material.BLUE_WOOL).setDisplayName(ChatColor.BLUE + "BLUE Wool").build();
-                break;
-            case "DARK_PURPLE":
-                itemStack = new ItemBuilder(Material.PURPLE_WOOL).setDisplayName(ChatColor.LIGHT_PURPLE + "PURPLE Wool").build();
-                break;
-        }
+        ItemStack itemStack = switch (teamColor) {
+            case "GRAY" -> new ItemBuilder(Material.GRAY_WOOL).setDisplayName(ChatColor.GRAY + "GRAY Wool").build();
+            case "BLACK" -> new ItemBuilder(Material.BLACK_WOOL).setDisplayName(ChatColor.BLACK + "BLACK Wool").build();
+            case "RED" -> new ItemBuilder(Material.RED_WOOL).setDisplayName(ChatColor.RED + "RED Wool").build();
+            case "GOLD" ->
+                    new ItemBuilder(Material.YELLOW_WOOL).setDisplayName(ChatColor.YELLOW + "YELLOW Wool").build();
+            case "GREEN" -> new ItemBuilder(Material.GREEN_WOOL).setDisplayName(ChatColor.GREEN + "GREEN Wool").build();
+            case "DARK_BLUE" ->
+                    new ItemBuilder(Material.BLUE_WOOL).setDisplayName(ChatColor.BLUE + "BLUE Wool").build();
+            case "DARK_PURPLE" ->
+                    new ItemBuilder(Material.PURPLE_WOOL).setDisplayName(ChatColor.LIGHT_PURPLE + "PURPLE Wool").build();
+            default -> null;
+        };
 
         if (itemStack != null) {
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -179,19 +167,12 @@ public class GuiManager {
 
     public ItemStack getEffectItem() {
         String effect = PalutenBoss.getInstance().getLoader().getFileBuilder().getString("auraEffect");
-        ItemStack itemStack = null;
-
-        switch (effect) {
-            case "CAMPFIRE_SIGNAL_SMOKE":
-                itemStack = new ItemStack(Material.SMOKER);
-                break;
-            case "FLAME":
-                itemStack = new ItemStack(Material.FIRE_CHARGE);
-                break;
-            case "WATER_WAKE":
-                itemStack = new ItemStack(Material.LIGHT_BLUE_TERRACOTTA);
-                break;
-        }
+        ItemStack itemStack = switch (effect) {
+            case "CAMPFIRE_SIGNAL_SMOKE" -> new ItemStack(Material.SMOKER);
+            case "FLAME" -> new ItemStack(Material.FIRE_CHARGE);
+            case "WATER_WAKE" -> new ItemStack(Material.LIGHT_BLUE_TERRACOTTA);
+            default -> null;
+        };
 
         if (itemStack != null) {
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -338,24 +319,16 @@ public class GuiManager {
     }
 
     public ChatColor getChatColor(DyeColor color) {
-        switch (color) {
-            case GRAY:
-                return ChatColor.GRAY;
-            case BLACK:
-                return ChatColor.BLACK;
-            case RED:
-                return ChatColor.RED;
-            case YELLOW:
-                return ChatColor.GOLD;
-            case GREEN:
-                return ChatColor.GREEN;
-            case BLUE:
-                return ChatColor.DARK_BLUE;
-            case PURPLE:
-                return ChatColor.DARK_PURPLE;
-            default:
-                return ChatColor.RESET;
-        }
+        return switch (color) {
+            case GRAY -> ChatColor.GRAY;
+            case BLACK -> ChatColor.BLACK;
+            case RED -> ChatColor.RED;
+            case YELLOW -> ChatColor.GOLD;
+            case GREEN -> ChatColor.GREEN;
+            case BLUE -> ChatColor.DARK_BLUE;
+            case PURPLE -> ChatColor.DARK_PURPLE;
+            default -> ChatColor.RESET;
+        };
     }
 
 

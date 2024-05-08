@@ -1,4 +1,4 @@
-package com.finley.palutenboss.util.builders;
+package com.finley.palutenboss.other.util.builder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;

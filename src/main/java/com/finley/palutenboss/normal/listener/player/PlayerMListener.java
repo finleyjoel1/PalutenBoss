@@ -1,12 +1,16 @@
-package com.finley.palutenboss.listener.player;
+package com.finley.palutenboss.normal.listener.player;
 
 import com.finley.palutenboss.PalutenBoss;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 
-public class PlayerMotdListener implements Listener {
+public class PlayerMListener implements Listener {
 
+    public PlayerMListener() {
+        Bukkit.getPluginManager().registerEvents(this, PalutenBoss.getInstance());
+    }
 
     @EventHandler
     public void handle(ServerListPingEvent event) {

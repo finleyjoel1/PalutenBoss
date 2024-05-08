@@ -1,7 +1,8 @@
-package com.finley.palutenboss.listener.entity;
+package com.finley.palutenboss.normal.listener.entity;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.builders.ItemBuilder;
+import com.finley.palutenboss.other.util.builder.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -13,7 +14,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class EntityDeathListener implements Listener {
+public class EntityDEListener implements Listener {
+
+    public EntityDEListener() {
+        Bukkit.getPluginManager().registerEvents(this, PalutenBoss.getInstance());
+    }
 
     @EventHandler
     public void handle(EntityDeathEvent event) {

@@ -1,4 +1,4 @@
-package com.finley.palutenboss.util.builders;
+package com.finley.palutenboss.other.util.builder;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

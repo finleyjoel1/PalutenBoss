@@ -1,9 +1,9 @@
-package com.finley.palutenboss.util.manager;
+package com.finley.palutenboss.other.util.other;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.Loader;
+import com.finley.palutenboss.other.util.Loader;
 
-public class FileManager {
+public class FileUtil {
 
     public void setLanguage() {
         Loader.language = PalutenBoss.getInstance().getLoader().getFileBuilder().getString("language");

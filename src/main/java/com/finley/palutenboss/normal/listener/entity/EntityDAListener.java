@@ -1,6 +1,7 @@
-package com.finley.palutenboss.listener.entity;
+package com.finley.palutenboss.normal.listener.entity;
 
 import com.finley.palutenboss.PalutenBoss;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,15 +13,17 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Objects;
 
-public class EntityDamageListener implements Listener {
+public class EntityDAListener implements Listener {
+
+    public EntityDAListener() {
+        Bukkit.getPluginManager().registerEvents(this, PalutenBoss.getInstance());
+    }
 
     @EventHandler
     public void handle(EntityDamageByEntityEvent event) {
         Entity target = event.getEntity();
         Entity damager = event.getDamager();
-
         String customName = target.getCustomName();
-
         EntityType entityType = target.getType();
         EntityType zombieType = EntityType.ZOMBIE;
 
@@ -29,14 +32,14 @@ public class EntityDamageListener implements Listener {
         }
 
         if (entityType == zombieType && customName.equalsIgnoreCase(PalutenBoss.getInstance().getBossName())) {
-
-            if (damager instanceof Player) {
-                Player player = (Player) damager;
+            if (damager instanceof Player player) {
                 if (player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(PalutenBoss.getInstance().getBossName() + " §c§lSword")) {
                     event.setDamage(1.5D);
+                    player.sendMessage(event.getDamage() + " Schaden gegeben.");
                     return;
                 }
                 event.setDamage(0.5D);
+                player.sendMessage(event.getDamage() + " Schaden gegeben.");
             }
 
         }

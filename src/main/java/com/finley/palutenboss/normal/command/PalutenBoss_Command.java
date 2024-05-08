@@ -1,7 +1,7 @@
-package com.finley.palutenboss.command;
+package com.finley.palutenboss.normal.command;
 
 import com.finley.palutenboss.PalutenBoss;
-import com.finley.palutenboss.util.manager.WoolColor;
+import com.finley.palutenboss.other.util.other.WoolColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PalutenBossCMD implements CommandExecutor, TabCompleter {
+public class PalutenBoss_Command implements CommandExecutor, TabCompleter {
 
     private final String spawnPermission = PalutenBoss.getInstance().getLoader().getPermission().getString("spawnPermission");
     private final String reloadPermission = PalutenBoss.getInstance().getLoader().getPermission().getString("reloadPermission");
@@ -25,21 +25,19 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
     private final String colorPermission = PalutenBoss.getInstance().getLoader().getPermission().getString("colorPermission");
     private final String effectPermission = PalutenBoss.getInstance().getLoader().getPermission().getString("effectPermission");
 
-    private List<String> argsNullList = List.of("spawn", "reload", "clear", "opengui", "settings");
-    private List<String> argsTwoList = List.of("language", "color", "effect");
-    private List<String> colorList = List.of("gray", "black", "red", "yellow", "green", "blue", "purple");
-    private List<String> languageList = List.of("de", "en", "ru", "es", "lt", "zh", "ja");
-    private List<String> effectsList = List.of("flame", "water_wake", "campfire_signal_smoke");
-
+    private final List<String> argsNullList = List.of("spawn", "reload", "clear", "opengui", "settings");
+    private final List<String> argsTwoList = List.of("language", "color", "effect");
+    private final List<String> colorList = List.of("gray", "black", "red", "yellow", "green", "blue", "purple");
+    private final List<String> languageList = List.of("de", "en", "ru", "es", "lt", "zh", "ja");
+    private final List<String> effectsList = List.of("flame", "water_wake", "campfire_signal_smoke");
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             PalutenBoss.getInstance().getLoader().getMessageManager().sendNoPlayerMessage();
             return true;
         }
 
-        Player player = (Player) sender;
         Location location = player.getLocation();
         String bossName = PalutenBoss.getInstance().getBossName();
 
@@ -62,13 +60,12 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
         if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("rl")) {
             if (player.hasPermission(reloadPermission)) {
                 PalutenBoss.getInstance().getLoader().getFileBuilder().reload();
-                PalutenBoss.getInstance().getFileManager().setLanguage();
+                PalutenBoss.getInstance().getFileUtil().setLanguage();
                 PalutenBoss.getInstance().getLoader().getMessages().reload();
                 PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "reloadSuccess");
                 return true;
             }
         }
-
 
         if (args[0].equalsIgnoreCase("clean") || args[0].equalsIgnoreCase("clear")) {
             if (player.hasPermission(cleanPermission)) {
@@ -76,7 +73,6 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
                 return true;
             }
         }
-
 
         if (args[0].equalsIgnoreCase("opengui")) {
             if (player.hasPermission(settingsPermission)) {
@@ -87,7 +83,7 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
 
         if (args[0].equalsIgnoreCase("spawn") || args[0].equalsIgnoreCase("summon")) {
             if (player.hasPermission(spawnPermission)) {
-                PalutenBoss.getInstance().getEntityManager().spawnEntity(player, location, bossName);
+                PalutenBoss.getInstance().getEntityManager().spawnEntity(player, location, bossName, PalutenBoss.getInstance().getLoader().getFileBuilder().getInteger("health"));
                 PalutenBoss.getInstance().getLoader().getMessageManager().sendTitleToPlayer(player, "alert");
                 PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "spawnSuccess");
                 return true;
@@ -105,7 +101,7 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
                 if (player.hasPermission(colorPermission)) {
 
                     if (WoolColor.isValidColor(args[2].toUpperCase())) {
-                        PalutenBoss.getInstance().getFileManager().setConfigFilePath("teamColor", args[2].toUpperCase());
+                        PalutenBoss.getInstance().getFileUtil().setConfigFilePath("teamColor", args[2].toUpperCase());
                         PalutenBoss.getInstance().getLoader().getFileBuilder().reload();
                         PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "teamSuccess");
                         return true;
@@ -121,7 +117,7 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
                 if (player.hasPermission(effectPermission)) {
 
                     if (PalutenBoss.getInstance().getLoader().getMenuManager().isValidParticle(args[2].toUpperCase())) {
-                        PalutenBoss.getInstance().getFileManager().setConfigFilePath("auraEffect", args[2].toUpperCase());
+                        PalutenBoss.getInstance().getFileUtil().setConfigFilePath("auraEffect", args[2].toUpperCase());
                         PalutenBoss.getInstance().getLoader().getFileBuilder().reload();
                         PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "effectSuccess");
                     } else {
@@ -141,8 +137,8 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
                     }
 
                     if (PalutenBoss.getInstance().getLoader().getMessageManager().isValidLanguage(args[2])) {
-                        PalutenBoss.getInstance().getFileManager().setConfigFilePath("language", args[2]);
-                        PalutenBoss.getInstance().getFileManager().setLanguage();
+                        PalutenBoss.getInstance().getFileUtil().setConfigFilePath("language", args[2]);
+                        PalutenBoss.getInstance().getFileUtil().setLanguage();
                         PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "changeLanguage");
                     } else {
                         PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "notFound");
@@ -160,10 +156,9 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return Collections.emptyList();
         }
-        Player player = (Player) sender;
 
         List<String> completions = new ArrayList<>();
 
@@ -190,6 +185,7 @@ public class PalutenBossCMD implements CommandExecutor, TabCompleter {
         String currentArg = args[args.length - 1].toLowerCase();
         completions.removeIf(c -> !c.toLowerCase().startsWith(currentArg));
 
+        //Gebe completions wieder zurück
         return completions;
     }
 

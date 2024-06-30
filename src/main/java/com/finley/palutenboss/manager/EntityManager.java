@@ -95,22 +95,22 @@ public class EntityManager {
         spawnAura(entity);
         runTimer(entity);
 
-        Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(PalutenBoss.getInstance().getLoader().getConfigBuilder().getInteger("health"));
-
-        try {
-            entity.setHealth(health);
-            entity.setMaxHealth(health);
-        } catch (IllegalArgumentException e) {
-            System.out.println("health < 1");
-            return;
+        if (health > 2048 || health < 1) {
+            health = 750;
+            System.out.println("Invalid Health (Reset to 750)");
         }
 
-        team.setColor(ChatColor.valueOf(PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("teamColor")));
+        Objects.requireNonNull(entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(health);
+        entity.setHealth(health);
+        entity.setMaxHealth(health);
+
+        team.setColor(ChatColor.valueOf(PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("entity.teamColor")));
         team.addEntry(entity.getUniqueId().toString());
 
-        if (entity instanceof Ageable ageEntity && (!ageEntity.isAdult())) {
+        if (entity instanceof Ageable ageEntity) {
             ageEntity.setAdult();
         }
+
         if (randomChance() == 0 && entityEquipment != null) {
             entityEquipment.setItemInHand(bossSword);
         }
@@ -161,7 +161,7 @@ public class EntityManager {
         World world = Bukkit.getWorld(worldName);
         if (world != null) {
             for (Entity entity : world.getEntities()) {
-                if (Objects.equals(entity.getCustomName(), PalutenBoss.getInstance().getBossName())) {
+                if (Objects.equals(entity.getCustomName(), ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()))) {
                     entity.remove();
                 }
             }
@@ -185,7 +185,7 @@ public class EntityManager {
                         double x = radius * Math.cos(angle);
                         double z = radius * Math.sin(angle);
                         Location particleLocation = location.clone().add(x, yOffset, z);
-                        world.spawnParticle(Particle.valueOf(PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("auraEffect")), particleLocation, 1, 0, 0, 0, 0);
+                        world.spawnParticle(Particle.valueOf(PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("entity.auraEffect")), particleLocation, 1, 0, 0, 0, 0);
                     }
 
                 } else {

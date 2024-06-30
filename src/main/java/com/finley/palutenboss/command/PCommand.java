@@ -2,7 +2,10 @@ package com.finley.palutenboss.command;
 
 import com.finley.palutenboss.PalutenBoss;
 import com.finley.palutenboss.util.other.WoolColor;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,11 +49,11 @@ public class PCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Location location = player.getLocation();
-        String bossName = PalutenBoss.getInstance().getBossName();
+
+        String bossName = ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName());
 
         if (args.length < 1) {
-            PalutenBoss.getInstance().getLoader().getMessageManager().sendMessage(player, "§8--------------" + PalutenBoss.getInstance().getBossName() + "§8---------------");
+            PalutenBoss.getInstance().getLoader().getMessageManager().sendMessage(player, "§8--------------" + PalutenBoss.getInstance().getPrefixName() + "§8---------------");
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessage(player, "§7/" + cmd.getName() + " §8<§7opengui§8>");
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessage(player, "§7/" + cmd.getName() + " §8<§7spawn§8>");
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessage(player, "§7/" + cmd.getName() + " §8<§7settings§8> §8<§7language§8/§7effect§8/§7color§8/§7health§8>");
@@ -62,7 +65,6 @@ public class PCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0]) {
             case "reload":
-            case "rl":
                 if (player.hasPermission(reloadPermission)) {
                     PalutenBoss.getInstance().getLoader().getConfigBuilder().reload();
                     PalutenBoss.getInstance().getFileUtil().setLanguage();
@@ -70,24 +72,36 @@ public class PCommand implements CommandExecutor, TabCompleter {
                     PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "reloadSuccess");
                     return true;
                 }
-            case "clean":
+                break;
             case "clear":
                 if (player.hasPermission(cleanPermission)) {
                     PalutenBoss.getInstance().getLoader().getInvManager().createWorldChooseInventory(player, "Choose World");
                     return true;
                 }
+                break;
             case "opengui":
-            case "gui":
                 if (player.hasPermission(settingsPermission)) {
                     PalutenBoss.getInstance().getLoader().getInvManager().createMainMenu(player, "Settings");
                     return true;
                 }
+                break;
             case "spawn":
-            case "summon":
                 if (player.hasPermission(spawnPermission)) {
-                    PalutenBoss.getInstance().getEntityManager().spawnEntity(player, location, bossName, PalutenBoss.getInstance().getLoader().getConfigBuilder().getInteger("health"));
+                    Location location;
+
+                    if (args.length < 2) {
+                        location = player.getLocation();
+                    } else {
+                        double xPos = Double.parseDouble(args[1]);
+                        double yPos = Double.parseDouble(args[2]);
+                        double zPos = Double.parseDouble(args[3]);
+                        location = new Location(player.getWorld(), xPos, yPos, zPos);
+                    }
+
+                    PalutenBoss.getInstance().getEntityManager().spawnEntity(player, location, bossName, PalutenBoss.getInstance().getLoader().getConfigBuilder().getDouble("entity.health"));
                     return true;
                 }
+                break;
             case "settings":
                 if (args.length < 3) {
                     PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "argumentError");
@@ -98,11 +112,11 @@ public class PCommand implements CommandExecutor, TabCompleter {
 
                 switch (args[1]) {
                     case "color":
-                    case "teamcolor":
                         if (player.hasPermission(colorPermission)) {
                             if (WoolColor.isValidColor(args[2].toUpperCase())) {
                                 String fixedColorName = WoolColor.getNewWoolColorName(args[2].toUpperCase());
-                                PalutenBoss.getInstance().getFileUtil().setConfigFilePath("teamColor", fixedColorName);
+                                System.out.println(fixedColorName);
+                                PalutenBoss.getInstance().getFileUtil().setConfigFilePath("entity.teamColor", fixedColorName);
                                 PalutenBoss.getInstance().getLoader().getConfigBuilder().reload();
                                 PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "teamSuccess");
                                 return true;
@@ -112,13 +126,14 @@ public class PCommand implements CommandExecutor, TabCompleter {
 
                             return false;
                         }
+                        break;
                     case "health":
                         if (player.hasPermission(healthPermission)) {
                             try {
-                                if (Double.parseDouble(args[2]) >= 2048) {
+                                if (Double.parseDouble(args[2]) > 2048 || Double.parseDouble(args[2]) < 1) {
                                     return true;
                                 }
-                                PalutenBoss.getInstance().getLoader().getConfigBuilder().setPath("health", Double.valueOf(args[2]));
+                                PalutenBoss.getInstance().getLoader().getConfigBuilder().setPath("entity.health", Double.parseDouble(args[2]));
                             } catch (NumberFormatException e) {
                                 PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "notFound");
                                 PalutenBoss.getInstance().getLoader().getMessageManager().sendMessage(player, "§c" + e);
@@ -141,7 +156,7 @@ public class PCommand implements CommandExecutor, TabCompleter {
                     case "effect":
                         if (player.hasPermission(effectPermission)) {
                             if (PalutenBoss.getInstance().getLoader().getRegisterManager().isValidParticle(args[2].toUpperCase())) {
-                                PalutenBoss.getInstance().getFileUtil().setConfigFilePath("auraEffect", args[2].toUpperCase());
+                                PalutenBoss.getInstance().getFileUtil().setConfigFilePath("entity.auraEffect", args[2].toUpperCase());
                                 PalutenBoss.getInstance().getLoader().getConfigBuilder().reload();
                                 PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "effectSuccess");
                             } else {
@@ -150,6 +165,7 @@ public class PCommand implements CommandExecutor, TabCompleter {
 
                             return true;
                         }
+                        break;
                     case "language":
                         if (player.hasPermission(languagePermission)) {
                             if (args[2].equalsIgnoreCase(PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("language"))) {
@@ -166,6 +182,7 @@ public class PCommand implements CommandExecutor, TabCompleter {
                             }
                             return true;
                         }
+                        break;
                 }
         }
 
@@ -180,15 +197,21 @@ public class PCommand implements CommandExecutor, TabCompleter {
         }
 
         List<String> completions = new ArrayList<>();
+        Location location = player.getLocation();
+        String xPos = String.valueOf(Math.round(location.getX()));
+        String yPos = String.valueOf(Math.round(location.getY()));
+        String zPos = String.valueOf(Math.round(location.getZ()));
 
         switch (args.length) {
             case 1:
                 completions.addAll(argsNullList);
+
                 if (args[0].equals("clear")) {
-                    completions.add("world");
-                    completions.add("world_nether");
-                    completions.add("world_the_end");
+                    for (World world : Bukkit.getWorlds()) {
+                        completions.add(world.getName());
+                    }
                 }
+
                 break;
             case 2:
                 if (args[0].equals("settings")) {
@@ -196,9 +219,15 @@ public class PCommand implements CommandExecutor, TabCompleter {
                         completions.addAll(argsTwoList);
                     }
                 }
+                if (args[0].equals("spawn")) {
+                    completions.add(xPos);
+                }
                 break;
             case 3:
-                if (player.hasPermission(colorPermission)) {
+                if (args[0].equals("spawn")) {
+                    completions.add(yPos);
+                }
+                if (player.hasPermission(settingsPermission)) {
                     switch (args[1].toLowerCase()) {
                         case "effect":
                             completions.addAll(effectsList);
@@ -218,6 +247,11 @@ public class PCommand implements CommandExecutor, TabCompleter {
                         default:
                             break;
                     }
+                }
+                break;
+            case 4:
+                if (args[0].equals("spawn")) {
+                    completions.add(zPos);
                 }
                 break;
         }

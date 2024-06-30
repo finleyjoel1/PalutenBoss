@@ -67,14 +67,15 @@ public class Loader {
     private void manageFile() {
         PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("language", "en");
         language = getConfigBuilder().getString("language");
+
         PalutenBoss.getInstance().getLoader().getMessageManager().saveMessages();
         PalutenBoss.getInstance().getLoader().getMessageManager().loadMessages();
-
         PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("motd", false);
-        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("auraEffect", "FLAME");
-        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("teamColor", "GOLD");
-        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("health", 750);
-
+        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("entity.auraEffect", "FLAME");
+        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("entity.teamColor", "GOLD");
+        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("entity.health", 750);
+        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("drops.dropItemIfPlayerExist", "palutenboss_sword".toUpperCase());
+        PalutenBoss.getInstance().getFileUtil().setConfigFilePathIfEmpty("drops.dropItemIfPlayerNotExist", "dirt".toUpperCase());
     }
 
     private void registerCommands() {

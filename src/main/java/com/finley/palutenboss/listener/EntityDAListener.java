@@ -2,6 +2,7 @@ package com.finley.palutenboss.listener;
 
 import com.finley.palutenboss.PalutenBoss;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -31,10 +32,10 @@ public class EntityDAListener implements Listener {
             return;
         }
 
-        if (entityType == zombieType && customName.equalsIgnoreCase(PalutenBoss.getInstance().getBossName())) {
+        if (entityType == zombieType && customName.equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()))) {
             if (damager instanceof Player player) {
                 if (player.getItemInHand().getItemMeta() == null) return;
-                if (player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(PalutenBoss.getInstance().getBossName() + " §c§lSword")) {
+                if (player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()) + " §c§lSword")) {
                     event.setDamage(1.5D);
                     return;
                 }
@@ -43,7 +44,7 @@ public class EntityDAListener implements Listener {
         }
 
         if (entityType == EntityType.PLAYER) {
-            if (damager instanceof Zombie && Objects.requireNonNull(damager.getCustomName()).equalsIgnoreCase(PalutenBoss.getInstance().getBossName())) {
+            if (damager instanceof Zombie && Objects.requireNonNull(damager.getCustomName()).equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()))) {
                 event.setDamage(2.5D);
             }
         }
@@ -63,7 +64,7 @@ public class EntityDAListener implements Listener {
             return;
         }
 
-        String palutenBossName = PalutenBoss.getInstance().getBossName();
+        String palutenBossName = ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName());
         EntityDamageEvent.DamageCause damageCause = event.getCause();
         EntityDamageEvent.DamageCause attackCause = EntityDamageEvent.DamageCause.ENTITY_ATTACK;
 

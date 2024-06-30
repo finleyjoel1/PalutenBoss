@@ -2,6 +2,7 @@ package com.finley.palutenboss.listener;
 
 import com.finley.palutenboss.PalutenBoss;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,11 +23,11 @@ public class EntityTListener implements Listener {
         Entity transformedEntity = event.getTransformedEntity();
 
         if (reason == drownedReason) {
-            if (entity.getCustomName() != null && entity.getCustomName().equalsIgnoreCase(PalutenBoss.getInstance().getBossName())) {
+            if (entity.getCustomName() != null && entity.getCustomName().equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()))) {
                 event.setCancelled(true);
                 transformedEntity.remove();
                 entity.remove();
-                PalutenBoss.getInstance().getEntityManager().spawnEntity(null, entity.getLocation(), PalutenBoss.getInstance().getBossName(), Double.parseDouble(PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("health")));
+                PalutenBoss.getInstance().getEntityManager().spawnEntity(null, entity.getLocation(), ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()), PalutenBoss.getInstance().getLoader().getConfigBuilder().getDouble("entity.health"));
             }
         }
     }

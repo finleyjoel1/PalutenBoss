@@ -4,10 +4,7 @@ import com.finley.palutenboss.PalutenBoss;
 import com.finley.palutenboss.util.builder.ItemBuilder;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +16,8 @@ import java.util.*;
 
 public class InvManager {
 
-    private static final String prefix = PalutenBoss.getInstance().getPrefix() + "§a§l";
-    private static final String permission = PalutenBoss.getInstance().getLoader().getPermissionFile().getString("settingsPermission");
+    private final String prefix = PalutenBoss.getInstance().getPrefix() + "§a§l";
+    private final String permission = PalutenBoss.getInstance().getLoader().getPermissionFile().getString("settingsPermission");
 
     public void createMainMenu(Player player, String name) {
         if (player.hasPermission(permission)) {
@@ -30,8 +27,8 @@ public class InvManager {
             ItemStack languageItem = getLanguageItem();
             ItemStack paper = new ItemBuilder(Material.PAPER).setDisplayName("§b§lReload §f§lConfig").build();
             ItemStack teamColor = getTeamColor();
-            ItemStack cleanPaluten = new ItemBuilder(Material.PUMPKIN).setDisplayName("§c§lClean " + PalutenBoss.getInstance().getBossName() + "es").build();
-            ItemStack spawnBoss = new ItemBuilder(Material.ENDER_PEARL).setDisplayName("§a§lSpawn " + PalutenBoss.getInstance().getBossName()).build();
+            ItemStack cleanPaluten = new ItemBuilder(Material.PUMPKIN).setDisplayName("§c§lClean " + ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()) + "es").build();
+            ItemStack spawnBoss = new ItemBuilder(Material.ENDER_PEARL).setDisplayName("§a§lSpawn " + ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName())).build();
             ItemStack effect = getEffectItem();
 
             ItemStack glassPane = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).setDisplayName("§b").build();
@@ -62,16 +59,23 @@ public class InvManager {
                 inventory.setItem(i, glassPane);
             }
 
-            ItemStack overWorld = new ItemBuilder(Material.GRASS_BLOCK).setDisplayName("§a§lOverworld").build();
-            ItemStack nether = new ItemBuilder(Material.NETHERRACK).setDisplayName("§c§lNether").build();
-            ItemStack end = new ItemBuilder(Material.END_PORTAL_FRAME).setDisplayName("§d§lEnd").build();
+            int count = 11;
 
-            inventory.setItem(12, overWorld);
-            inventory.setItem(13, nether);
-            inventory.setItem(14, end);
+            for (World world : Bukkit.getWorlds()) {
+                ItemStack worldItem = new ItemBuilder(Material.GRASS_BLOCK).setDisplayName("§f" + world.getName()).setLore(List.of("§7Teleportiere dich zu §f" + world.getName())).build();
+
+                if (count == 16) {
+                    count += 4;
+                } else if (count == 25) {
+                    break;
+                }
+
+                inventory.setItem(count, worldItem);
+                count++;
+            }
 
             ItemStack back = new ItemBuilder(Material.BARRIER).setDisplayName("§c§lBack").build();
-            inventory.setItem(31, back);
+            inventory.setItem(40, back);
 
             player.openInventory(inventory);
         }
@@ -247,7 +251,7 @@ public class InvManager {
     }
 
     private ItemStack getTeamColor() {
-        String teamColor = PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("teamColor");
+        String teamColor = PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("entity.teamColor");
 
         ItemStack itemStack = switch (teamColor) {
             case "GRAY" -> new ItemBuilder(Material.GRAY_WOOL).setDisplayName(ChatColor.GRAY + "GRAY Wool").build();
@@ -273,7 +277,7 @@ public class InvManager {
     }
 
     private ItemStack getEffectItem() {
-        String effect = PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("auraEffect");
+        String effect = PalutenBoss.getInstance().getLoader().getConfigBuilder().getString("entity.auraEffect");
         ItemStack itemStack = switch (effect) {
             case "CAMPFIRE_SIGNAL_SMOKE" -> new ItemStack(Material.SMOKER);
             case "FLAME" -> new ItemStack(Material.FIRE_CHARGE);

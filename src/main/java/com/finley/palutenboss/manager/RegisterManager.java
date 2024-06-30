@@ -24,12 +24,12 @@ public class RegisterManager {
         } else if (itemName.equalsIgnoreCase("§d§lTeam Color")) {
             closeInventory(player);
             PalutenBoss.getInstance().getLoader().getInvManager().createTeamInventory(player, "Team Color");
-        } else if (itemName.equalsIgnoreCase("§c§lClean " + PalutenBoss.getInstance().getBossName() + "es")) {
+        } else if (itemName.equalsIgnoreCase("§c§lClean " + ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()) + "es")) {
             closeInventory(player);
             PalutenBoss.getInstance().getLoader().getInvManager().createWorldChooseInventory(player, "Choose World");
-        } else if (itemName.equalsIgnoreCase("§a§lSpawn " + PalutenBoss.getInstance().getBossName())) {
+        } else if (itemName.equalsIgnoreCase("§a§lSpawn " + ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()))) {
             closeInventory(player);
-            PalutenBoss.getInstance().getEntityManager().spawnEntity(player, player.getLocation(), PalutenBoss.getInstance().getBossName(), PalutenBoss.getInstance().getLoader().getConfigBuilder().getInteger("health"));
+            PalutenBoss.getInstance().getEntityManager().spawnEntity(player, player.getLocation(), ChatColor.translateAlternateColorCodes('&', PalutenBoss.getInstance().getBossName()), PalutenBoss.getInstance().getLoader().getConfigBuilder().getDouble("entity.health"));
         } else if (itemName.equalsIgnoreCase("§6§lEffect")) {
             closeInventory(player);
             PalutenBoss.getInstance().getLoader().getInvManager().createEffectInventory(player, "Effect");
@@ -73,7 +73,7 @@ public class RegisterManager {
         String woolColorName = itemName.toUpperCase().replace(" WOOL", "");
         String fixedColorName = WoolColor.getNewWoolColorName(woolColorName);
 
-        PalutenBoss.getInstance().getFileUtil().setConfigFilePath("teamColor", fixedColorName);
+        PalutenBoss.getInstance().getFileUtil().setConfigFilePath("entity.teamColor", fixedColorName);
         PalutenBoss.getInstance().getLoader().getConfigBuilder().reload();
         PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "teamSuccess");
         closeInventory(player);
@@ -146,30 +146,25 @@ public class RegisterManager {
 
     public void registerEffect(Player player, String itemName) {
         if (itemName.equalsIgnoreCase("§cFire")) {
-            setPath("auraEffect", "FLAME");
+            setPath("entity.auraEffect", "FLAME");
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "effectSuccess");
             closeInventory(player);
         } else if (itemName.equalsIgnoreCase("§dSmoke")) {
-            setPath("auraEffect", "CAMPFIRE_SIGNAL_SMOKE");
+            setPath("entity.auraEffect", "CAMPFIRE_SIGNAL_SMOKE");
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "effectSuccess");
             closeInventory(player);
         } else if (itemName.equalsIgnoreCase("§bWater")) {
-            setPath("auraEffect", "WATER_WAKE");
+            setPath("entity.auraEffect", "WATER_WAKE");
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "effectSuccess");
             closeInventory(player);
         }
     }
 
     public void registerChoose(Player player, String itemName) {
-        if (itemName.equalsIgnoreCase("§a§lOverworld")) {
-            PalutenBoss.getInstance().getEntityManager().cleanPalutenBosses("world");
-        } else if (itemName.equalsIgnoreCase("§c§lNether")) {
-            PalutenBoss.getInstance().getEntityManager().cleanPalutenBosses("world_nether");
-        } else if (itemName.equalsIgnoreCase("§d§lEnd")) {
-            PalutenBoss.getInstance().getEntityManager().cleanPalutenBosses("world_the_end");
-        } else {
+        if (itemName.contains("Back")) {
             return;
         }
+        PalutenBoss.getInstance().getEntityManager().cleanPalutenBosses(itemName.replace("§f", ""));
 
         closeInventory(player);
         PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "cleanSuccess");
@@ -178,7 +173,7 @@ public class RegisterManager {
     public void registerHealth(Player player, String itemName) {
         try {
             String newName = itemName.replace("§f§o", "");
-            PalutenBoss.getInstance().getLoader().getConfigBuilder().setPath("health", Double.valueOf(newName));
+            PalutenBoss.getInstance().getLoader().getConfigBuilder().setPath("entity.health", Double.parseDouble(newName));
             closeInventory(player);
             PalutenBoss.getInstance().getLoader().getMessageManager().sendMessageToPlayer(player, "healthSuccess");
         } catch (NumberFormatException ignored) {

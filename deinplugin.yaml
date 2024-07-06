@@ -1,0 +1,36 @@
+specVersion: 1.501
+type: plugin
+name: PalutenBoss
+authors:
+  - finleyjoel1yt
+supportedGameVersions: 1.21
+category: misc
+introduction: Ein Fan Plugin für den YouTuber: Paluten
+description: |
+      # Erstellte Befehle
+      - /palutenboss
+      
+      # Berechtigungen
+      - palutenboss.spawn
+      - palutenboss.reload
+      - palutenboss.settings
+      - palutenboss.language
+      - palutenboss.clean
+      - palutenboss.color
+      - palutenboss.health
+
+      # Sprachen
+      de - Deutsch
+      en - Englisch
+      ru - Russisch
+      es - Spanisch
+      lt - Litauisch
+      zh - Chineschisch
+      ja - Japanisch
+      tr - Türkisch
+
+      # Anleitung
+      Lade dir das Plugin runter.
+      Tue es in dein Plugins Ordner.
+      Lade den Server neu oder restarte ihn.
+      Und zum Schluss, sich freuen dass das Plugin funktioniert.

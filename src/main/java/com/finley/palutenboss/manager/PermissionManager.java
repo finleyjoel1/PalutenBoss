@@ -1,4 +1,4 @@
-package com.finley.palutenboss.other.manager.player;
+package com.finley.palutenboss.manager;
 
 import com.finley.palutenboss.PalutenBoss;
 
@@ -11,6 +11,8 @@ public class PermissionManager {
         addPermission("languagePermission", PalutenBoss.getInstance().getPermissionName() + "language");
         addPermission("cleanPermission", PalutenBoss.getInstance().getPermissionName() + "clean");
         addPermission("colorPermission", PalutenBoss.getInstance().getPermissionName() + "color");
+        addPermission("healthPermission", PalutenBoss.getInstance().getPermissionName() + "health");
+        addPermission("defaultLanguagePermission", PalutenBoss.getInstance().getPermissionName() + "defaultLanguagePermission");
     }
 
     private void addPermission(String permissionName, String permission) {
@@ -18,6 +20,6 @@ public class PermissionManager {
     }
 
     private void setPermissionPath(String path, String value) {
-        PalutenBoss.getInstance().getLoader().getPermission().setPathIfEmpty(path, value);
+        PalutenBoss.getInstance().getLoader().getPermissionFile().setPathIfEmpty(path, value);
     }
 }

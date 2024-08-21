@@ -1,11 +1,16 @@
-package com.finley.palutenboss.other.util.builder;
+package com.finley.palutenboss.util.builder;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.UUID;
 
 public class ItemBuilder {
 
@@ -24,6 +29,21 @@ public class ItemBuilder {
 
     public ItemBuilder setUnbreakable(boolean unbreakable) {
         itemMeta.setUnbreakable(unbreakable);
+        return this;
+    }
+
+    public ItemBuilder setHead(String url) {
+        SkullMeta headMeta = (SkullMeta) itemMeta;
+        GameProfile profile = new GameProfile(UUID.randomUUID(), "");
+        profile.getProperties().put("textures", new Property("textures", url));
+
+        try {
+            Method metaSetProfileMethod = headMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
+            metaSetProfileMethod.setAccessible(true);
+            metaSetProfileMethod.invoke(headMeta, profile);
+        } catch (Exception ignored) {
+
+        }
         return this;
     }
 

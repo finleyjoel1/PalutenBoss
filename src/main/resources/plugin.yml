@@ -1,13 +1,16 @@
 name: PalutenBoss
-version: 1.5
+version: 1.501
 main: com.finley.palutenboss.PalutenBoss
 description: A Fan-Plugin for the Youtuber "Paluten"
-author: finleyjoel1yt
+author: finleyjoel1
 website: https://www.spigotmc.org/resources/palutenboss.109389/
-api-version: '1.20'
+api-version: '1.21'
+authors:
+  - finleyjoel1yt
 
 commands:
   palutenboss:
+    permission: palutenboss.command
     description: A command for the palutenboss plugin.
     aliases:
       - paluten
